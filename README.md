@@ -1,6 +1,6 @@
 # Runtime Binary Patcher for Game Servers
 
-[English](#english) | [Espanol](#español)
+[English](#english) | [Español](#español)
 
 ---
 
@@ -95,7 +95,7 @@ Educational / Portfolio use. See individual files for details.
 
 ---
 
-## Espanol
+## Español
 
 ### Descripcion General
 
