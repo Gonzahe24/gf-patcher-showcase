@@ -75,7 +75,7 @@ Built to extend and fix a legacy 32-bit x86 Linux game server (no source code av
 
 1. **Daemon** detects the target process via `/proc` scanning
 2. **ptrace** attaches to the process, stopping it
-3. **Remote mmap** allocates an executable memory region (code cave) inside the target
+3. **Remote mmap** allocates an executable memory región (code cave) inside the target
 4. **Shellcode** is hand-assembled and written into the code cave via `/proc/PID/mem`
 5. A **JMP hook** is installed at the original function, redirecting execution to the cave
 6. The cave runs custom logic, then jumps back to the original code flow
@@ -97,21 +97,21 @@ Educational / Portfolio use. See individual files for details.
 
 ## Español
 
-### Descripcion General
+### Descripción General
 
-Un demonio Linux que parchea procesos de servidores de juegos **en memoria** sin modificar los binarios en disco. Usa `ptrace` para adjuntarse a procesos, `/proc/PID/mem` para lectura/escritura de memoria, y ejecucion remota de `mmap` via syscall para asignar cuevas de codigo ejecutable dentro de los procesos objetivo.
+Un demonio Linux que parchea procesos de servidores de juegos **en memoria** sin modificar los binarios en disco. Usa `ptrace` para adjuntarse a procesos, `/proc/PID/mem` para lectura/escritura de memoria, y ejecución remota de `mmap` vía syscall para asignar cuevas de código ejecutable dentro de los procesos objetivo.
 
-Construido para extender y corregir un servidor de juegos legacy x86 de 32 bits en Linux (sin codigo fuente disponible), inyectando logica personalizada en tiempo de ejecucion.
+Construido para extender y corregir un servidor de juegos legacy x86 de 32 bits en Linux (sin código fuente disponible), inyectando lógica personalizada en tiempo de ejecución.
 
-### Caracteristicas
+### Características
 
 - **No invasivo**: todos los parches son solo en memoria, completamente reversibles al desconectar o reiniciar el proceso
 - **40+ parches modulares de gameplay** (combate, objetos, PvP, calidad de vida)
-- **Configuracion recargable en caliente**: relee el archivo de configuracion cada 2 segundos, activa/desactiva parches en vivo
-- **Deteccion automatica de procesos** via escaneo de `/proc`
-- **Deteccion de reciclaje de PID** usando comparacion de tiempo de inicio en `/proc/PID/stat`
-- **Codigo maquina x86 ensamblado a mano** para cuevas de codigo (sin dependencia de compilador/ensamblador en runtime)
-- **Degradacion elegante**: parches fallidos no bloquean a los demas
+- **Configuración recargable en caliente**: relee el archivo de configuración cada 2 segundos, activa/desactiva parches en vivo
+- **Detección automática de procesos** vía escaneo de `/proc`
+- **Detección de reciclaje de PID** usando comparación de tiempo de inicio en `/proc/PID/stat`
+- **Código máquina x86 ensamblado a mano** para cuevas de código (sin dependencia de compilador/ensamblador en runtime)
+- **Degradación elegante**: parches fallidos no bloquean a los demás
 
 ### Arquitectura
 
@@ -132,37 +132,37 @@ Construido para extender y corregir un servidor de juegos legacy x86 de 32 bits 
                                        |
                               +--------+--------+
                               |                 |
-                       Escrituras directas  Cuevas de codigo
-                       (parches de valor)   (parches de logica)
+                       Escrituras directas  Cuevas de código
+                       (parches de valor)   (parches de lógica)
 ```
 
-### Tecnologias
+### Tecnologías
 
-- **Lenguaje**: C (POSIX / especifico de Linux)
+- **Lenguaje**: C (POSIX / específico de Linux)
 - **Control de procesos**: `ptrace(PTRACE_ATTACH/DETACH/GETREGS/SETREGS/SINGLESTEP)`
-- **E/S de memoria**: `/proc/PID/mem` (lectura/escritura via `pread`/`pwrite`)
-- **Inyeccion de codigo**: `mmap` remoto via secuestro de syscall, shellcode x86 ensamblado a mano
+- **E/S de memoria**: `/proc/PID/mem` (lectura/escritura vía `pread`/`pwrite`)
+- **Inyección de código**: `mmap` remoto vía secuestro de syscall, shellcode x86 ensamblado a mano
 - **Descubrimiento de procesos**: escaneo del filesystem `/proc`, parseo de `/proc/PID/stat`
-- **Configuracion**: Parser key=value personalizado con recarga en vivo
+- **Configuración**: Parser key=value personalizado con recarga en vivo
 
-### Ejemplos de Codigo
+### Ejemplos de Código
 
-| Modulo | Descripcion |
+| Módulo | Descripción |
 |--------|-------------|
-| [ptrace-core/](ptrace-core/) | Attach/detach de procesos via ptrace |
-| [memory-io/](memory-io/) | Leer/escribir memoria de proceso via /proc/PID/mem |
-| [code-caves/](code-caves/) | Asignacion remota de mmap via inyeccion de syscall |
-| [process-scanner/](process-scanner/) | Deteccion automatica de procesos + guardia contra reciclaje de PID |
-| [config/](config/) | Parser de configuracion key=value recargable en caliente |
+| [ptrace-core/](ptrace-core/) | Attach/detach de procesos vía ptrace |
+| [memory-io/](memory-io/) | Leer/escribir memoria de proceso vía /proc/PID/mem |
+| [code-caves/](code-caves/) | Asignación remota de mmap vía inyección de syscall |
+| [process-scanner/](process-scanner/) | Detección automática de procesos + guardia contra reciclaje de PID |
+| [config/](config/) | Parser de configuración key=value recargable en caliente |
 | [patch-example/](patch-example/) | Ejemplo completo de parche: shellcode + JMP hook |
 | [daemon/](daemon/) | Bucle principal del demonio orquestando todo |
 
-### Como Funciona un Parche (De Principio a Fin)
+### Cómo Funciona un Parche (De Principio a Fin)
 
-1. El **demonio** detecta el proceso objetivo via escaneo de `/proc`
-2. **ptrace** se adjunta al proceso, detenendolo
-3. **mmap remoto** asigna una region de memoria ejecutable (cueva de codigo) dentro del objetivo
-4. El **shellcode** se ensambla a mano y se escribe en la cueva via `/proc/PID/mem`
-5. Se instala un **JMP hook** en la funcion original, redirigiendo la ejecucion a la cueva
-6. La cueva ejecuta logica personalizada, luego salta de vuelta al flujo original
-7. **ptrace** se desconecta, el proceso continua con el parche activo
+1. El **demonio** detecta el proceso objetivo vía escaneo de `/proc`
+2. **ptrace** se adjunta al proceso, deteniéndolo
+3. **mmap remoto** asigna una región de memoria ejecutable (cueva de código) dentro del objetivo
+4. El **shellcode** se ensambla a mano y se escribe en la cueva vía `/proc/PID/mem`
+5. Se instala un **JMP hook** en la función original, redirigiendo la ejecución a la cueva
+6. La cueva ejecuta lógica personalizada, luego salta de vuelta al flujo original
+7. **ptrace** se desconecta, el proceso continúa con el parche activo
