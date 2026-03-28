@@ -1,0 +1,14 @@
+# Build
+*.o
+*.so
+*.a
+*.out
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
